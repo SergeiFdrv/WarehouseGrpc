@@ -1,0 +1,82 @@
+syntax = "proto3";
+import "google/protobuf/duration.proto";  
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "WarehouseGrpc";
+
+package warehouse;
+
+service Warehouse {
+  rpc GetCrane (ID) returns (Crane);
+  rpc GetCraneErrorDuration (Crane) returns (google.protobuf.Duration);
+  rpc GetTransporter (ID) returns (Transporter);
+  rpc GetGate (ID) returns (Gate);
+}
+
+message ID {
+	int32 id = 1;
+}
+
+///Класс данных - кран
+message Crane {
+  ///Номер крана (1 - 10)
+  int32 craneNumber = 1;
+
+  ///Статус крана:
+  ///1 - работает на постановку
+  ///2 - работает на выгрузку
+  ///3 - простаивает
+  ///4 - в ошибке
+  int32 craneState = 2;
+
+  ///Количество заданий в очереди
+  int32 queueLength = 3;
+
+  /// Время поломки
+  google.protobuf.Timestamp errorTime = 4; // DateTime
+}
+
+///Класс данных конвеер
+message Transporter {
+  ///Номер конвеера (1 - 4)
+  int32 transporterNumber = 1;
+
+  ///Работает на вход
+  bool workIn = 2;
+
+  ///Работает на выход
+  bool workOut = 3;
+
+  ///Поломка на вход
+  bool errorIn = 4;
+
+  ///Поломка на выход
+  bool errorOut = 5;
+}
+
+///Класс данных - ворота
+message Gate {
+  ///Номер ворот (1 - 15)
+  int32 gateNumber = 1;
+
+  ///Есть ли машина на воротах
+  bool carPresent = 2;
+
+  ///Номер АВТО
+  string carNumber = 3;
+
+  ///Время постановки машины на ворота
+  google.protobuf.Timestamp carBeginTime = 4; // DateTime
+
+  ///Ворота открыты
+  bool gateOpen = 5;
+
+  ///Тип производимой операции 1 - прием товара, 2 - отгрузка товара
+  int32 operationType = 6;
+
+  ///Количество паллет в зоне напротив данных ворот
+  int32 palletCount = 7;
+
+  ///Количество паллет с предупреждением (нужно покрасить другим цветом)
+  int32 alarmPalletCount = 8;
+}
