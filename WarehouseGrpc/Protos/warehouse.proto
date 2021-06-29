@@ -8,9 +8,12 @@ package warehouse;
 
 service Warehouse {
   rpc GetCrane (ID) returns (Crane);
+  rpc GetCranes (ID) returns (stream Crane);
   rpc GetCraneErrorDuration (Crane) returns (google.protobuf.Duration);
   rpc GetTransporter (ID) returns (Transporter);
+  rpc GetTransporters (ID) returns (stream Transporter);
   rpc GetGate (ID) returns (Gate);
+  rpc GetGates (ID) returns (stream Gate);
 }
 
 message ID {
@@ -79,4 +82,8 @@ message Gate {
 
   /// оличество паллет с предупреждением (нужно покрасить другим цветом)
   int32 alarmPalletCount = 8;
+  
+  ///ƒлительность нахождени€ авто у ворот
+  //google.protobuf.Duration getCarDuration = 9;
+      //carPresent ? DateTime.now().difference(carBeginTime) : Duration();
 }
