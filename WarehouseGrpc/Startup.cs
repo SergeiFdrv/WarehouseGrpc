@@ -17,6 +17,7 @@ namespace WarehouseGrpc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
+            services.AddGrpcReflection();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,6 +33,10 @@ namespace WarehouseGrpc
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<WarehouseService>();
+                if (env.IsDevelopment())
+                {
+                    endpoints.MapGrpcReflectionService();
+                }
 
                 endpoints.MapGet("/", async context =>
                 {
