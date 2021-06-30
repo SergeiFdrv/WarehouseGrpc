@@ -27,8 +27,10 @@ namespace WarehouseGrpc.TestClient
                 cGate = gates.ResponseStream.Current;
                 Console.WriteLine(cGate.CarNumber);
             };
+            Console.WriteLine(5 % 2);
+            Console.WriteLine(6 % 2);
         }
 
-        private static readonly GrpcChannel GrpcChannel = GrpcChannel.ForAddress("https://localhost:5555");
+        private static readonly GrpcChannel GrpcChannel = GrpcChannel.ForAddress("https://localhost:5001");
     }
 }
