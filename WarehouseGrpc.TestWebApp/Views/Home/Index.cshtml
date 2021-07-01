@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    List<WarehouseGrpc.Crane> cranes = ViewBag.Cranes;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @{ 
+        foreach (var c in cranes)
+        {
+            <div style="display: flex;">
+                <p>@c.CraneNumber</p>
+                <p>@c.ErrorTime</p>
+            </div>
+        }
+    }
+</div>
