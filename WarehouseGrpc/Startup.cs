@@ -18,6 +18,13 @@ namespace WarehouseGrpc
         {
             services.AddGrpc();
             services.AddGrpcReflection();
+            services.AddCors(o => o.AddPolicy("AllowAll", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader()
+                       .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,9 +37,12 @@ namespace WarehouseGrpc
 
             app.UseRouting();
 
+            app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
+            app.UseCors();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<WarehouseService>();
+                endpoints.MapGrpcService<WarehouseService>().EnableGrpcWeb().RequireCors("AllowAll");
                 if (env.IsDevelopment())
                 {
                     endpoints.MapGrpcReflectionService();
